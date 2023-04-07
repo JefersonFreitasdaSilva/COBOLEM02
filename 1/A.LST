@@ -1,0 +1,76 @@
+* Microsoft COBOL Version 4.5        L2.4 revision 002 07-Apr-23 12:33 Page   1
+*                                        A.CBL
+* Options: LIST(A.LST) ASMLIST(A.GRP)
+     1 identification division.
+     2 program-id. A.
+     3 author. Jeferson.
+     4 installation. fatec-sp.
+     5 date-written. 07/04/2023.
+     6 date-compiled. 07-Apr-23 12:33.
+     7 security.
+     8
+     9 environment division.
+    10 configuration section.
+    11 source-computer. ibmpc.
+    12 object-computer. ibmpc.
+    13 special-names. decimal-point is comma.
+    14
+    15 input-output section.
+    16 file-control.
+    17 select cadcli1 assign to disk
+    18 organization is line sequential.
+    19 select cadcli2 assign to disk
+    20 organization is line sequential.
+    21
+    22 data division.
+    23 file section.
+    24 fd cadcli1
+    25     label record are standard
+    26     value of file-id is "cadcli1.dat".
+    27 01 reg-cli1.
+    28     02 cod-ent   pic 9(5).
+    29     02 nome-ent  pic x(30).
+    30     02 renda-ent pic 9(6)v9(2).
+    31
+    32 fd cadcli2
+    33     label record are standard
+    34     value of file-id is "cadcli2.dat1".
+    35 01 reg-cli2.
+    36     02 cod-sai  pic 9(5).
+    37     02 nome-sai pic x(30).
+    38
+    39 working-storage section.
+    40 77 fim-arq pic x(3) value "nao".
+    41
+    42 procedure division.
+    43
+    44 PGM-1.
+    45
+    46 perform inicio.
+    47 perform principal until fim-arq equal "sim".
+    48 perform fim.
+    49 stop run.
+    50
+    51 inicio.
+    52    open input cadcli1
+    53        output cadcli2.
+    54
+    55 principal.
+    56    if renda-ent IS >= 10000
+    57         perform grava.
+* Microsoft COBOL Version 4.5        L2.4 revision 002 07-Apr-23 12:33 Page   2
+*                                        A.CBL
+    58    read cadcli1 at end move "sim" to fim-arq.
+    59
+    60 grava.
+    61        move cod-ent  to  cod-sai.
+    62        move nome-ent to nome-sai.
+    63        write reg-cli2.
+    64 fim.
+    65     close cadcli1 cadcli2.
+* Microsoft COBOL Version 4.5        L2.4 revision 002
+* (C)Copyright Microsoft Corp 1984, 1991       URN AXUPA/MS0/000000
+*                                              REF GNB-024050002A7
+*
+* Total Messages:     0
+* Data:        1040     Code:         319     Dictionary:        1007

@@ -1,0 +1,89 @@
+* Microsoft COBOL Version 4.5        L2.4 revision 002 07-Apr-23 12:54 Page   1
+*                                        B.CBL
+* Options: LIST(B.LST) ASMLIST(B.GRP)
+     1 identification division.
+     2 program-id. A.
+     3 author. Jeferson.
+     4 installation. fatec-sp.
+     5 date-written. 07/04/2023.
+     6 date-compiled. 07-Apr-23 12:54.
+     7 security.
+     8
+     9 environment division.
+    10 configuration section.
+    11 source-computer. ibmpc.
+    12 object-computer. ibmpc.
+    13 special-names. decimal-point is comma.
+    14
+    15 input-output section.
+    16 file-control.
+    17 select cadalu assign to disk
+    18 organization is line sequential.
+    19 select cadatu assign to disk
+    20 organization is line sequential.
+    21
+    22 data division.
+    23 file section.
+    24 fd cadalu
+    25     label record are standard
+    26     value of file-id is "cadalu.dat".
+    27 01 reg-alu.
+    28     02 num-ent   pic 9(5).
+    29     02 nome-ent  pic x(30).
+    30     02 sexo-ent  pic A(1).
+    31     02 data-nasc-ent.
+    32         03 dd-ent pic 9(2).
+    33         03 mm-ent pic 9(2).
+    34         03 aa-ent pic 9(4).
+    35
+    36
+    37 fd cadatu
+    38     label record are standard
+    39     value of file-id is "cadatu.dat".
+    40 01 reg-atu.
+    41     02 num-sai  pic 9(5).
+    42     02 nome-sai pic x(30).
+    43     02 data-nasc-sai.
+    44         03 dd-sai pic 9(2).
+    45         03 mm-sai pic 9(2).
+    46         03 aa-sai pic 9(4).
+    47
+    48 working-storage section.
+    49 77 fim-arq pic x(3) value "nao".
+    50
+    51 procedure division.
+    52
+    53 PGM-1.
+    54
+    55 perform inicio.
+    56 perform principal until fim-arq equal "sim".
+    57 perform fim.
+* Microsoft COBOL Version 4.5        L2.4 revision 002 07-Apr-23 12:54 Page   2
+*                                        B.CBL
+    58 stop run.
+    59
+    60 inicio.
+    61    open input cadalu
+    62        output cadatu.
+    63
+    64 principal.
+    65    if  sexo-ent is equal "m" or sexo-ent equal "M"
+    66       if aa-ent is <= 1960
+    67             perform grava.
+    68    read cadalu at end move "sim" to fim-arq.
+    69
+    70 grava.
+    71        move num-ent  to  num-sai.
+    72        move nome-ent to nome-sai.
+    73        move aa-ent to aa-sai.
+    74        move mm-ent to mm-sai.
+    75        move dd-ent to dd-sai.
+    76        write reg-atu.
+    77 fim.
+    78     close cadalu cadatu.
+* Microsoft COBOL Version 4.5        L2.4 revision 002
+* (C)Copyright Microsoft Corp 1984, 1991       URN AXUPA/MS0/000000
+*                                              REF GNB-024050002A7
+*
+* Total Messages:     0
+* Data:        1048     Code:         351     Dictionary:        1242

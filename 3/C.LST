@@ -1,0 +1,87 @@
+* Microsoft COBOL Version 4.5        L2.4 revision 002 07-Apr-23 14:12 Page   1
+*                                        C.CBL
+* Options: LIST(C.LST) ASMLIST(C.GRP)
+     1 identification division.
+     2 program-id. A.
+     3 author. Jeferson.
+     4 installation. fatec-sp.
+     5 date-written. 07/04/2023.
+     6 date-compiled. 07-Apr-23 14:12.
+     7 security.
+     8
+     9 environment division.
+    10 configuration section.
+    11 source-computer. ibmpc.
+    12 object-computer. ibmpc.
+    13 special-names. decimal-point is comma.
+    14
+    15 input-output section.
+    16 file-control.
+    17 select cadalu assign to disk
+    18 organization is line sequential.
+    19 select cadatu assign to disk
+    20 organization is line sequential.
+    21
+    22 data division.
+    23 file section.
+    24 fd cadalu
+    25    label record is standard
+    26    value of file-id is "cadalu.dat".
+    27 01 reg-alu.
+    28    02 num-ent   pic 9(5).
+    29    02 not1-ent  pic 9(2).
+    30    02 not2-ent  pic 9(2).
+    31    02 data-nasc-ent    pic 9(4) occurs 2 times .
+    32* occurs 2 times.
+    33    02 sexo-ent     pic A(1).
+    34
+    35
+    36 fd cadatu
+    37    label record is standard
+    38    value of file-id is "cadatu.dat".
+    39 01 reg-atu.
+    40    02 num-sai  pic 9(5).
+    41    02 media-sai pic 9(2)v99.
+    42
+    43 working-storage section.
+    44 77 fim-arq pic x(3) value "nao".
+    45 01 media pic 9(2)v99.
+    46
+    47 procedure division.
+    48
+    49 PGM-1.
+    50    perform inicio.
+    51    perform principal until fim-arq = "sim".
+    52    perform fim.
+    53    stop run.
+    54
+    55 inicio.
+    56    open input cadalu
+    57     output cadatu.
+* Microsoft COBOL Version 4.5        L2.4 revision 002 07-Apr-23 14:12 Page   2
+*                                        C.CBL
+    58
+    59 principal.
+    60    if  sexo-ent = "F" or sexo-ent = "f"
+    61        perform calc.
+    62    read cadalu at end move "sim" to fim-arq.
+    63
+    64 calc.
+    65
+    66
+    67  if data-nasc-ent(2) NOT < 2000
+    68     perform gravar.
+    69
+    70 gravar.
+    71  compute media=(not1-ent + not2-ent)/2.
+    72  move num-ent to num-sai.
+    73  move media to media-sai.
+    74  write reg-atu.
+    75 fim.
+    76    close cadalu cadatu.
+* Microsoft COBOL Version 4.5        L2.4 revision 002
+* (C)Copyright Microsoft Corp 1984, 1991       URN AXUPA/MS0/000000
+*                                              REF GNB-024050002A7
+*
+* Total Messages:     0
+* Data:        1000     Code:         355     Dictionary:        1166

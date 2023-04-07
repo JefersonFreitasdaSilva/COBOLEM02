@@ -1,0 +1,83 @@
+* Microsoft COBOL Version 4.5        L2.4 revision 002 07-Apr-23 14:29 Page   1
+*                                        D.CBL
+* Options: LIST(D.LST) ASMLIST(D.GRP)
+     1 identification division.
+     2 program-id. A.
+     3 author. Jeferson.
+     4 installation. fatec-sp.
+     5 date-written. 07/04/2023.
+     6 date-compiled. 07-Apr-23 14:29.
+     7 security.
+     8
+     9 environment division.
+    10 configuration section.
+    11 source-computer. ibmpc.
+    12 object-computer. ibmpc.
+    13 special-names. decimal-point is comma.
+    14
+    15 input-output section.
+    16 file-control.
+    17 select cadnota assign to disk
+    18 organization is line sequential.
+    19 select cadaprov assign to disk
+    20 organization is line sequential.
+    21
+    22 data division.
+    23 file section.
+    24 fd cadnota
+    25    label record is standard
+    26    value of file-id is "cadnota.dat".
+    27 01 reg-nota.
+    28    02 num-ent   pic 9(5).
+    29    02 not1 pic 9(2)v99.
+    30    02 not2 pic 9(2)v99.
+    31    02 not3 pic 9(2)v99.
+    32    02 not4 pic 9(2)v99.
+    33
+    34 fd cadaprov
+    35    label record is standard
+    36    value of file-id is "cadaprov.dat".
+    37 01 reg-aprov.
+    38    02 num-sai  pic 9(5).
+    39    02 media-sai pic 9(2)v99.
+    40
+    41 working-storage section.
+    42 77 fim-arq pic x(3) value "nao".
+    43 01 media pic 9(2)v99.
+    44
+    45 procedure division.
+    46
+    47 PGM-1.
+    48    perform inicio.
+    49    perform principal until fim-arq = "sim".
+    50    perform fim.
+    51    stop run.
+    52
+    53 inicio.
+    54    open input cadnota
+    55     output cadaprov.
+    56
+    57 principal.
+* Microsoft COBOL Version 4.5        L2.4 revision 002 07-Apr-23 14:29 Page   2
+*                                        D.CBL
+    58    perform calc.
+    59    read cadnota at end move "sim" to fim-arq.
+    60
+    61 calc.
+    62     compute media = (not1 + not2 + not3 + not4) / 4.
+    63     if media is >= 6
+    64         perform gravar.
+    65
+    66 gravar.
+    67
+    68  move num-ent to num-sai.
+    69  move media to media-sai.
+    70  write reg-aprov.
+    71 fim.
+    72    close cadnota cadaprov.
+* Microsoft COBOL Version 4.5        L2.4 revision 002
+* (C)Copyright Microsoft Corp 1984, 1991       URN AXUPA/MS0/000000
+*                                              REF GNB-024050002A7
+*
+* Total Messages:     0
+* Data:        1008     Code:         350     Dictionary:        1138
